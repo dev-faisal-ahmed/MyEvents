@@ -7,7 +7,7 @@ import { ProfileMenu } from "@/features/auth/components/profile-menu";
 import { Link, useNavigate } from "react-router";
 import { useLinks } from "./use-links";
 import { useMediaQuery } from "@/lib/hooks";
-import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { HiMenuAlt1 } from "react-icons/hi";
 import { useState } from "react";
 
@@ -41,12 +41,12 @@ const DesktopLinks = () => {
   const links = useLinks();
 
   return (
-    <div className="font-title flex items-center justify-center gap-2">
+    <div className="font-title flex items-center justify-center gap-4">
       {links.map((link) => (
         <Link
           key={link.href}
           to={link.href}
-          className={cn("border-b border-transparent py-2", link.isActive && "text-primary border-primary")}
+          className={cn("border-b border-transparent py-2 font-bold", link.isActive && "text-primary border-primary")}
         >
           {link.title}
         </Link>
@@ -73,6 +73,8 @@ const MobileLinks = () => {
       </SheetTrigger>
       <SheetContent side="left">
         <SheetHeader>
+          <SheetTitle className="sr-only">Menu</SheetTitle>
+          <SheetDescription className="sr-only">Navigation Menu for mobile screen</SheetDescription>
           <Logo />
         </SheetHeader>
         <div className="mt-6 flex flex-col gap-2 px-4">
