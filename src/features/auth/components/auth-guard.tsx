@@ -1,0 +1,12 @@
+import { FullPageLoader } from "@/components/shared/full-page-loader";
+import { useAuth } from "@/context/auth-context";
+import { Navigate, Outlet } from "react-router";
+
+export function AuthGuard() {
+  const { user, isLoading } = useAuth();
+
+  if (isLoading) return <FullPageLoader message="Please Wait..." />;
+  if (!user) return <Navigate to="/landing" />;
+
+  return <Outlet />;
+}

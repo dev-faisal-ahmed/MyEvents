@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { lazy, Suspense, type LazyExoticComponent, type ReactNode } from "react";
 import { MainLayout } from "./layout/main-layout";
+import { AuthGuard } from "./features/auth/components/auth-guard";
 
 const lazyPages = {
   home: lazy(() => import("@/pages/home")),
@@ -23,7 +24,13 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: withSuspense(lazyPages.home, <>Loading</>),
+        element: <AuthGuard />,
+        children: [
+          {
+            path: "/",
+            element: withSuspense(lazyPages.home, <>Loading</>),
+          },
+        ],
       },
       // auth
       {
