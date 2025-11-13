@@ -1,3 +1,4 @@
+import type { PropsWithChildren } from "react";
 import { useForm } from "react-hook-form";
 import { eventSchema, type TEventSchema } from "./event-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { eventCategories } from "@/data/event-categories";
 import { FormSelect } from "@/components/form/form-select";
 import { MarkdownEditor } from "@/components/form/markdown-editor";
-import type { PropsWithChildren } from "react";
 import { DateTimePicker } from "@/components/ui/date-time-picker";
 import { Textarea } from "@/components/ui/textarea";
 import { ImageInput } from "@/components/form/image-input";
@@ -16,7 +16,12 @@ import { useNavigate } from "react-router";
 
 const categoryOptions = Object.entries(eventCategories).map(([key, eventValue]) => ({ label: eventValue, value: key }));
 
-export function EventForm() {
+type TEventFormProps = {
+  onSubmit: (formData: TEventSchema, reset: () => void) => void;
+  isLoading: boolean;
+};
+
+export function EventForm({ onSubmit, isLoading }: TEventFormProps) {
   const form = useForm<TEventSchema>({
     resolver: zodResolver(eventSchema),
     defaultValues: { title: "", description: "", category: "", location: "" },
@@ -24,13 +29,15 @@ export function EventForm() {
 
   const navigate = useNavigate();
 
+  const handleSubmit = form.handleSubmit((formData) => onSubmit(formData, form.reset));
+
   const handleCancel = () => {
     navigate(-1);
   };
 
   return (
-    <form>
-      <FieldSet>
+    <form onSubmit={handleSubmit}>
+      <FieldSet disabled={isLoading}>
         <FieldGroup>
           <GridContainer>
             <FormField control={form.control} name="title" label="* Title">
@@ -69,7 +76,7 @@ export function EventForm() {
         <Button onClick={handleCancel} type="button" variant="outline">
           Cancel
         </Button>
-        <Button>Submit</Button>
+        <Button isLoading={isLoading}>{isLoading ? "Submitting" : "Submit"}</Button>
       </div>
     </form>
   );
