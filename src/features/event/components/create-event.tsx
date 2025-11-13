@@ -1,6 +1,6 @@
-import type { TEventSchema } from "./event-schema";
+import type { TEventSchema } from "../event-schema";
 import { EventForm } from "./event-form";
-import { createEvent } from "./event-service";
+import { createEvent } from "../event-service";
 import { useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 

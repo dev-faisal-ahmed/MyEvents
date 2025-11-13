@@ -1,4 +1,4 @@
-import { CreateEvent } from "@/features/event/create-event";
+import { CreateEvent } from "@/features/event/components/create-event";
 
 export default function NewEventPage() {
   return (

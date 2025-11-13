@@ -30,3 +30,19 @@ export const errorToast = (error: unknown) => {
 };
 
 export const removeWhiteSpace = (str: string) => str.replace(/\s/g, "_");
+
+export const stripMarkdown = (markdown: string): string => {
+  if (!markdown) return "";
+
+  return markdown
+    .replace(/!\[.*?\]\(.*?\)/g, "") // remove images
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") // remove links but keep text
+    .replace(/(`{1,3})(.*?)\1/g, "$2") // remove inline/code fences
+    .replace(/(\*\*|__)(.*?)\1/g, "$2") // bold
+    .replace(/(\*|_)(.*?)\1/g, "$2") // italics
+    .replace(/^#+\s+(.*)/gm, "$1") // headings
+    .replace(/>\s?(.*)/g, "$1") // blockquotes
+    .replace(/[-*+]\s+(.*)/g, "$1") // list items
+    .replace(/\n{2,}/g, " ") // collapse newlines
+    .trim();
+};

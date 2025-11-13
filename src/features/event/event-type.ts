@@ -8,6 +8,7 @@ export type TEvent = {
   endDate: Timestamp;
   category: string;
   coverImage: string;
+  location: string;
   cratedBy: string;
   createdAt: Timestamp;
 };

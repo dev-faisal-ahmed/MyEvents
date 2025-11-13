@@ -1,7 +1,8 @@
+import type { TEvent } from "./event-type";
 import type { TEventSchema } from "./event-schema";
 import { safePromise } from "@/lib/utils";
 import { getUserIdOrThrow } from "../global/global-service";
-import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { collection, doc, getDocs, query, serverTimestamp, setDoc, where } from "firebase/firestore";
 import { db } from "@/lib/firebase/firebase-config";
 import { dbNames } from "@/lib/firebase/db-names";
 import { Response } from "@/lib/response";
@@ -33,4 +34,13 @@ const createEvent = async (input: TEventSchema) => {
   return Response.success("Event created successfully", { id: eventDocRef.id });
 };
 
-export { createEvent };
+const getEvents = async () => {
+  const userId = getUserIdOrThrow();
+  const dbQuery = query(collection(db, dbNames.events), where("createdBy", "==", userId));
+  const snapshot = await getDocs(dbQuery);
+  const events = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as TEvent[];
+
+  return Response.success("Events fetched successfully", events);
+};
+
+export { createEvent, getEvents };
