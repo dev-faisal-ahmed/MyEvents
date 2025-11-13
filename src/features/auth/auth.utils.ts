@@ -1,5 +1,5 @@
 import { safePromise } from "@/lib/utils";
-import { auth, googleAuthProvider } from "@/lib/firebase-config";
+import { auth, googleAuthProvider } from "@/lib/firebase/firebase-config";
 import { signInWithPopup, signOut } from "firebase/auth";
 
 export const signInWithGoogle = async () => {

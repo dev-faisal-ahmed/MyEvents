@@ -2,7 +2,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAuth } from "@/context/auth-context";
+import { useAuth } from "@/providers/auth-provider";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import { DropdownMenuContent } from "@radix-ui/react-dropdown-menu";
 import { IoLogOut } from "react-icons/io5";

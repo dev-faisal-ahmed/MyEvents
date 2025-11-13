@@ -2,10 +2,13 @@ import "./index.css";
 
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { App } from "./app";
+import { Providers } from "./providers/providers";
+import { Router } from "./router";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
+    <Providers>
+      <Router />
+    </Providers>
   </StrictMode>,
 );

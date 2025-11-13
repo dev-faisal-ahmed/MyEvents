@@ -1,5 +1,5 @@
 import { FullPageLoader } from "@/components/shared/full-page-loader";
-import { useAuth } from "@/context/auth-context";
+import { useAuth } from "@/providers/auth-provider";
 import { Navigate, Outlet } from "react-router";
 
 export function AuthGuard() {

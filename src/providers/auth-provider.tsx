@@ -1,4 +1,4 @@
-import { auth } from "@/lib/firebase-config";
+import { auth } from "@/lib/firebase/firebase-config";
 import { onAuthStateChanged, type User } from "firebase/auth";
 import { createContext, useContext, useEffect, useMemo, useState, type PropsWithChildren } from "react";
 

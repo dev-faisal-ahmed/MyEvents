@@ -1,4 +1,4 @@
-import { useAuth } from "@/context/auth-context";
+import { useAuth } from "@/providers/auth-provider";
 import { GoogleLogin } from "@/features/auth/components/google-login";
 import { IoMdArrowForward } from "react-icons/io";
 import { Navigate } from "react-router";

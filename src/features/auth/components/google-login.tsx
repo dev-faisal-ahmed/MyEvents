@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/context/auth-context";
+import { useAuth } from "@/providers/auth-provider";
 import { signInWithGoogle } from "../auth.utils";
 import type { PropsWithChildren } from "react";
 

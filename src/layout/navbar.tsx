@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/shared/container";
 import { Logo } from "@/components/shared/logo";
-import { useAuth } from "@/context/auth-context";
+import { useAuth } from "@/providers/auth-provider";
 import { GoogleLogin } from "@/features/auth/components/google-login";
 import { ProfileMenu } from "@/features/auth/components/profile-menu";
 import { Link, useNavigate } from "react-router";
