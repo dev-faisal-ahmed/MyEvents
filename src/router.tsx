@@ -5,10 +5,11 @@ import { AuthGuard } from "./features/auth/components/auth-guard";
 import { FullPageLoader } from "./components/shared/full-page-loader";
 
 const lazyPages = {
-  home: lazy(() => import("@/pages/home")),
+  home: lazy(() => import("@/pages/home-page")),
+  newEvent: lazy(() => import("@/pages/new-event-page")),
 
   // auth
-  landing: lazy(() => import("@/pages/landing")),
+  landing: lazy(() => import("@/pages/landing-page")),
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
           {
             path: "/",
             element: withSuspense(lazyPages.home),
+          },
+          {
+            path: "/events/new",
+            element: withSuspense(lazyPages.newEvent),
           },
         ],
       },
