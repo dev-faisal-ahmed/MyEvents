@@ -7,6 +7,7 @@ import { FullPageLoader } from "./components/shared/full-page-loader";
 const lazyPages = {
   home: lazy(() => import("@/pages/home-page")),
   newEvent: lazy(() => import("@/pages/new-event-page")),
+  eventDetails: lazy(() => import("@/pages/event-details-page")),
 
   // auth
   landing: lazy(() => import("@/pages/landing-page")),
@@ -30,14 +31,9 @@ const router = createBrowserRouter([
         path: "/",
         element: <AuthGuard />,
         children: [
-          {
-            path: "/",
-            element: withSuspense(lazyPages.home),
-          },
-          {
-            path: "/events/new",
-            element: withSuspense(lazyPages.newEvent),
-          },
+          { path: "/", element: withSuspense(lazyPages.home) },
+          { path: "/events/new", element: withSuspense(lazyPages.newEvent) },
+          { path: "/events/:id", element: withSuspense(lazyPages.eventDetails) },
         ],
       },
       // auth

@@ -4,10 +4,9 @@ import { cn, stripMarkdown } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { CalendarDays, MapPin } from "lucide-react";
 import { format } from "date-fns";
+import { Link } from "react-router";
 
-type TEventGirdProps = {
-  events: TEvent[];
-};
+type TEventGirdProps = { events: TEvent[] };
 
 export function EventGrid({ events }: TEventGirdProps) {
   return (
@@ -46,7 +45,7 @@ const EventCard = ({ event, className }: TEventCardProps) => {
           <img
             src={coverImage}
             alt={title}
-            className="max-h-full max-w-full rounded-xl object-contain transition-transform duration-300 group-hover:scale-105"
+            className="object- max-h-full max-w-full rounded-xl transition-transform duration-300 group-hover:scale-105"
           />
         </div>
 
@@ -55,20 +54,23 @@ const EventCard = ({ event, className }: TEventCardProps) => {
 
       {/* Content */}
       <CardHeader>
-        <CardTitle className="line-clamp-1">{title}</CardTitle>
-        <div className="text-muted-foreground mt-1 flex flex-col gap-1 text-sm">
-          <div className="flex items-center gap-1">
+        <CardTitle className="line-clamp-1">
+          <Link to={`/events/${event.id}`} className="hover:text-primary">
+            {title}
+          </Link>
+        </CardTitle>
+        <div className="text-muted-foreground mt-1 flex flex-col gap-2 text-sm">
+          <div className="flex items-center gap-2">
             <CalendarDays className="size-4" />
             <span>
               {format(startDate.toDate(), "MMM dd, yyyy")} - {format(endDate.toDate(), "MMM dd, yyyy")}
             </span>
           </div>
-          {location && (
-            <div className="flex items-center gap-1">
-              <MapPin className="size-4" />
-              <span className="truncate">{location}</span>
-            </div>
-          )}
+
+          <div className="flex items-center gap-2">
+            <MapPin className="size-4" />
+            <span className="truncate">{location}</span>
+          </div>
         </div>
       </CardHeader>
 
