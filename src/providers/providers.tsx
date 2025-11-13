@@ -7,7 +7,7 @@ export function Providers({ children }: PropsWithChildren) {
   return (
     <AuthProvider>
       <QueryProvider>
-        <Toaster />
+        <Toaster richColors duration={1000} />
         {children}
       </QueryProvider>
     </AuthProvider>

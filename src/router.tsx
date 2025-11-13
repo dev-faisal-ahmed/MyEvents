@@ -6,7 +6,6 @@ import { FullPageLoader } from "./components/shared/full-page-loader";
 
 const lazyPages = {
   home: lazy(() => import("@/pages/home")),
-  categories: lazy(() => import("@/pages/categories")),
 
   // auth
   landing: lazy(() => import("@/pages/landing")),
@@ -33,10 +32,6 @@ const router = createBrowserRouter([
           {
             path: "/",
             element: withSuspense(lazyPages.home),
-          },
-          {
-            path: "/categories",
-            element: withSuspense(lazyPages.categories),
           },
         ],
       },
