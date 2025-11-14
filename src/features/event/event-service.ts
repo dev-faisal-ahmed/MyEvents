@@ -46,14 +46,6 @@ const getUpComingEvents = async () => {
   return Response.success("Events fetched successfully", events);
 };
 
-const getEvents = async () => {
-  const dbQuery = query(collection(db, dbNames.events));
-  const snapshot = await getDocs(dbQuery);
-  const events = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as TEvent[];
-
-  return Response.success("Events fetched successfully", events);
-};
-
 const getEventById = async (id: string) => {
   const docRef = doc(db, dbNames.events, id);
   const snapshot = await getDoc(docRef);
@@ -61,4 +53,39 @@ const getEventById = async (id: string) => {
   return Response.success("Event fetched successfully", eventData);
 };
 
-export { createEvent, getUpComingEvents, getEvents, getEventById };
+type TUpdateEventInput = {
+  id: string;
+  input: Partial<TEventSchema>;
+};
+
+const updateEvent = async ({ id, input }: TUpdateEventInput) => {
+  const user = getUserOrThrow();
+  const eventRef = doc(db, dbNames.events, id);
+  const eventSnapshot = await getDoc(eventRef);
+
+  if (!eventSnapshot.exists()) throw new Error("Event not found");
+
+  const existingEvent = eventSnapshot.data() as TEvent;
+  if (existingEvent.createdBy.id !== user.uid) throw new Error("You are not authorized to update this event");
+
+  if (input.coverImage instanceof File) {
+    const imageUploadPromise = uploadToCloudinary(input.coverImage);
+    const [error, result] = await safePromise(imageUploadPromise);
+    if (error) throw error;
+    input.coverImage = result;
+  }
+
+  const updateData: Partial<TEvent> = {
+    ...input,
+    startDate: input.startDate ? Timestamp.fromDate(input.startDate) : existingEvent.startDate,
+    endDate: input.endDate ? Timestamp.fromDate(input.endDate) : existingEvent.endDate,
+    coverImage: input.coverImage ?? existingEvent.coverImage,
+  };
+
+  const [updateError] = await safePromise(setDoc(eventRef, updateData, { merge: true }));
+  if (updateError) throw updateError;
+
+  return Response.success("Event updated successfully", { id });
+};
+
+export { createEvent, getUpComingEvents, getEventById, updateEvent };

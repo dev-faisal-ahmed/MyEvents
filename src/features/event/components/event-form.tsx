@@ -17,12 +17,13 @@ import { categoryOptions } from "@/data/event-categories";
 type TEventFormProps = {
   onSubmit: (formData: TEventSchema, reset: () => void) => void;
   isLoading: boolean;
+  defaultValues?: Partial<TEventSchema>;
 };
 
-export function EventForm({ onSubmit, isLoading }: TEventFormProps) {
+export function EventForm({ onSubmit, isLoading, defaultValues }: TEventFormProps) {
   const form = useForm<TEventSchema>({
     resolver: zodResolver(eventSchema),
-    defaultValues: { title: "", description: "", category: "", location: "" },
+    defaultValues,
   });
 
   const navigate = useNavigate();

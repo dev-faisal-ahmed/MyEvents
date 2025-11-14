@@ -17,7 +17,6 @@ export const useLinks = () => {
     return [
       { title: "Home", href: "/", isActive: exactMatch("/") },
       { title: "Create Event", href: "/events/new", isActive: exactMatch("/events/new") },
-      { title: "My Events", href: "/events/mine", isActive: exactMatch("/events/mine") },
     ];
   }, [pathname]);
 

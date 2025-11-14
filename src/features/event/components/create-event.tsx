@@ -25,7 +25,11 @@ export function CreateEvent() {
         <CardDescription>Provide information to create your event</CardDescription>
       </CardHeader>
       <CardContent>
-        <EventForm onSubmit={handleAddEvent} isLoading={isPending} />
+        <EventForm
+          onSubmit={handleAddEvent}
+          isLoading={isPending}
+          defaultValues={{ title: "", category: "", description: "", location: "" }}
+        />
       </CardContent>
     </Card>
   );

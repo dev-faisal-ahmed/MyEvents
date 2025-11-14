@@ -1,46 +1,22 @@
-"use client";
-
-import type { TEvent } from "../event-type";
-import { useQuery } from "@tanstack/react-query";
-import { queryKeys } from "@/lib/query-keys";
-import { getEventById } from "../event-service";
-import { CalendarDays, MapPin, User, Tag } from "lucide-react";
+import { CalendarDays, MapPin, User, Tag, EditIcon, Trash2Icon } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { MarkdownPreview } from "@/components/shared/markdown-preview";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
+import { Button } from "@/components/ui/button";
+import { useGetEventDetails } from "../event-hook";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Link } from "react-router";
 
-// ---------------------------------------------------------------------------
-// CONTROLLER COMPONENT
-// ---------------------------------------------------------------------------
+type TEventDetailsProps = { id: string };
 
-type TEventDetailsControllerProps = { id: string };
+export function EventDetails({ id }: TEventDetailsProps) {
+  const { data, isLoading } = useGetEventDetails(id);
 
-export function EventDetailsController({ id }: TEventDetailsControllerProps) {
-  const { data, isLoading } = useQuery({
-    queryKey: [queryKeys.events, { id }],
-    queryFn: () => getEventById(id),
-    enabled: !!id,
-    select: (res) => res.data,
-  });
-
-  if (isLoading) return <div className="text-muted-foreground py-20 text-center">Loading event...</div>;
+  if (isLoading) return <EventDetailsSkeleton />;
   if (!data) return <div className="text-destructive py-20 text-center">Event not found</div>;
 
-  return <EventDetails event={data} />;
-}
-
-// ---------------------------------------------------------------------------
-// PRESENTATION COMPONENT
-// ---------------------------------------------------------------------------
-
-type TEventDetailsProps = {
-  event: TEvent;
-  isOwner?: boolean;
-};
-
-const EventDetails = ({ event }: TEventDetailsProps) => {
-  const { title, description, category, location, startDate, endDate, coverImage, createdBy } = event;
+  const { coverImage, title, category, createdBy, startDate, endDate, location, description } = data;
 
   return (
     <section className="container mx-auto flex flex-col gap-6 py-8">
@@ -53,13 +29,13 @@ const EventDetails = ({ event }: TEventDetailsProps) => {
 
         {/* Foreground main image */}
         <div className="relative z-10 flex h-80 w-full items-center justify-center sm:h-[450px]">
-          <img src={coverImage} alt={title} className="max-h-full max-w-full rounded-xl object-contain" />
+          <img src={coverImage} alt={title} className="max-h-full w-full rounded-xl object-contain" />
         </div>
       </div>
 
       {/* Details Section */}
       <Card className="border-none shadow-md dark:border-neutral-800 dark:bg-neutral-900/50">
-        <CardHeader>
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <div className="text-white">
             <h1 className="text-3xl font-bold drop-shadow-md sm:text-4xl">{title}</h1>
             <div className="text-muted-foreground mt-2 flex flex-wrap gap-2 text-sm">
@@ -70,6 +46,17 @@ const EventDetails = ({ event }: TEventDetailsProps) => {
                 <User className="size-4" /> {createdBy.name}
               </span>
             </div>
+          </div>
+
+          <div className="mt-4 flex gap-2 sm:mt-0">
+            <Link to={`/events/${id}/edit`}>
+              <Button variant="default">
+                <EditIcon className="mr-1 h-4 w-4" /> Edit
+              </Button>
+            </Link>
+            <Button variant="destructive">
+              <Trash2Icon className="mr-1 h-4 w-4" /> Delete
+            </Button>
           </div>
         </CardHeader>
 
@@ -115,6 +102,59 @@ const EventDetails = ({ event }: TEventDetailsProps) => {
 
           <div className="prose prose-neutral dark:prose-invert max-w-none leading-relaxed">
             <MarkdownPreview value={description} />
+          </div>
+        </CardContent>
+      </Card>
+    </section>
+  );
+}
+
+const EventDetailsSkeleton = () => {
+  return (
+    <section className="container mx-auto flex flex-col gap-6 py-8">
+      {/* Cover Image Skeleton */}
+      <div className="relative w-full overflow-hidden rounded-xl shadow-lg">
+        <Skeleton className="h-80 w-full rounded-xl sm:h-[450px]" />
+      </div>
+
+      {/* Details Section */}
+      <Card className="border-none shadow-md dark:border-neutral-800 dark:bg-neutral-900/50">
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3">
+            <Skeleton className="h-8 w-60 rounded-md" />
+            <div className="flex flex-wrap gap-2">
+              <Skeleton className="h-6 w-20 rounded-md" />
+              <Skeleton className="h-6 w-28 rounded-md" />
+            </div>
+          </div>
+
+          {/* Edit/Delete Buttons */}
+          <div className="mt-4 flex gap-2 sm:mt-0">
+            <Skeleton className="h-10 w-20 rounded-md" />
+            <Skeleton className="h-10 w-20 rounded-md" />
+          </div>
+        </CardHeader>
+
+        <CardContent className="flex flex-col gap-6">
+          {/* Meta Info Grid */}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-2">
+                <Skeleton className="h-4 w-4 rounded-full" />
+                <div className="flex flex-col gap-1">
+                  <Skeleton className="h-3 w-20 rounded-md" />
+                  <Skeleton className="h-3 w-32 rounded-md" />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Description Skeleton */}
+          <div className="flex flex-col gap-3">
+            <Skeleton className="h-4 w-full rounded-md" />
+            <Skeleton className="h-4 w-11/12 rounded-md" />
+            <Skeleton className="h-4 w-10/12 rounded-md" />
+            <Skeleton className="h-4 w-8/12 rounded-md" />
           </div>
         </CardContent>
       </Card>

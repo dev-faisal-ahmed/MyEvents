@@ -62,7 +62,7 @@ const EventCard = ({ event, className }: TEventCardProps) => {
           <img
             src={coverImage}
             alt={title}
-            className="object- max-h-full max-w-full rounded-xl transition-transform duration-300 group-hover:scale-105"
+            className="max-h-full w-full rounded-xl object-contain transition-transform duration-300 group-hover:scale-105"
           />
         </div>
 

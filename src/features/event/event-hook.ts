@@ -2,6 +2,9 @@ import { useMemo } from "react";
 import type { TEvent } from "./event-type";
 import { useSearchParams } from "react-router";
 import { eventFilterKeys } from "./event-consts";
+import { useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/lib/query-keys";
+import { getEventById } from "./event-service";
 
 export const useEventsWithFilters = (eventsFromDB: TEvent[], limit: number = 6) => {
   const [searchParams] = useSearchParams();
@@ -36,4 +39,13 @@ export const useEventsWithFilters = (eventsFromDB: TEvent[], limit: number = 6) 
   }, [search, category, startDate, endDate, eventsFromDB, page, limit]);
 
   return eventsWithPaginationData;
+};
+
+export const useGetEventDetails = (id: string) => {
+  return useQuery({
+    queryKey: [queryKeys.events, { id }],
+    queryFn: () => getEventById(id),
+    enabled: !!id,
+    select: (res) => res.data,
+  });
 };
