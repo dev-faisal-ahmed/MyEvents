@@ -1,4 +1,5 @@
 import type { Timestamp } from "firebase/firestore";
+import type { TUser } from "../auth/auth-type";
 
 export type TEvent = {
   id: string;
@@ -9,6 +10,6 @@ export type TEvent = {
   category: string;
   coverImage: string;
   location: string;
-  cratedBy: string;
+  createdBy: Pick<TUser, "id" | "name" | "photoURL">;
   createdAt: Timestamp;
 };

@@ -56,7 +56,7 @@ export function DateTimePicker({ value, onChange }: TDateTimePickerProps) {
       <PopoverTrigger asChild>
         <Button variant="outline" className={cn("w-full justify-start text-left font-normal", !value && "text-muted-foreground")}>
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {value ? format(value, "MM/dd/yyyy hh:mm aa") : <span>MM/DD/YYYY hh:mm aa</span>}
+          {value ? format(value, "dd/MM/yyyy hh:mm aa") : <span>DD/MM/YYYY hh:mm aa</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">

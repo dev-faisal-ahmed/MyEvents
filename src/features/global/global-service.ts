@@ -1,9 +1,9 @@
 import { auth } from "@/lib/firebase/firebase-config";
 
-const getUserIdOrThrow = () => {
+const getUserOrThrow = () => {
   const user = auth.currentUser;
   if (!user) throw new Error("User is not authenticated");
-  return user.uid;
+  return user;
 };
 
-export { getUserIdOrThrow };
+export { getUserOrThrow };

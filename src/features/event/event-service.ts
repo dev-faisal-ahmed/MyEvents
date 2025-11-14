@@ -1,16 +1,15 @@
 import type { TEvent } from "./event-type";
 import type { TEventSchema } from "./event-schema";
 import { safePromise } from "@/lib/utils";
-import { getUserIdOrThrow } from "../global/global-service";
-import { collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where } from "firebase/firestore";
+import { getUserOrThrow } from "../global/global-service";
+import { collection, doc, getDoc, getDocs, query, setDoc, Timestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase/firebase-config";
 import { dbNames } from "@/lib/firebase/db-names";
 import { uploadToCloudinary } from "@/lib/cloudinary";
 import { Response } from "@/lib/response";
-import { format } from "date-fns";
 
 const createEvent = async (input: TEventSchema) => {
-  const userId = getUserIdOrThrow();
+  const user = getUserOrThrow();
 
   if (input.coverImage instanceof File) {
     const uploadImagePromise = uploadToCloudinary(input.coverImage);
@@ -21,11 +20,15 @@ const createEvent = async (input: TEventSchema) => {
 
   const eventsRef = collection(db, dbNames.events);
   const eventDocRef = doc(eventsRef);
+  const createdBy: TEvent["createdBy"] = { id: user.uid, name: user.displayName ?? "", photoURL: user.photoURL ?? "" };
 
-  const eventData = {
+  const eventData: Omit<TEvent, "id"> = {
     ...input,
-    createdBy: userId,
-    createdAt: serverTimestamp(),
+    coverImage: input.coverImage as string,
+    startDate: Timestamp.fromDate(input.startDate),
+    endDate: Timestamp.fromDate(input.endDate),
+    createdBy,
+    createdAt: Timestamp.now(),
   };
 
   const setDocPromise = setDoc(eventDocRef, eventData);
@@ -35,17 +38,10 @@ const createEvent = async (input: TEventSchema) => {
   return Response.success("Event created successfully", { id: eventDocRef.id });
 };
 
-// const getUpcomingEvents = async () => {
-//   const dbQuery = query(collection(db, dbNames.events), where("startDate", ">=", serverTimestamp()));
-// };
-
 const getEvents = async () => {
-  const userId = getUserIdOrThrow();
-  const dbQuery = query(collection(db, dbNames.events), where("createdBy", "==", userId));
+  const dbQuery = query(collection(db, dbNames.events));
   const snapshot = await getDocs(dbQuery);
   const events = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as TEvent[];
-
-  console.log("Called at", format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 
   return Response.success("Events fetched successfully", events);
 };

@@ -2,14 +2,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { TEvent } from "../event-type";
 import { cn, stripMarkdown } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { CalendarDays, MapPin } from "lucide-react";
+import { CalendarDays, MapPin, UserIcon } from "lucide-react";
 import { format } from "date-fns";
 import { Link } from "react-router";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { PropsWithChildren } from "react";
 
 // main components to export
-
 type TEventGirdProps = { events: TEvent[] };
 export function EventGrid({ events }: TEventGirdProps) {
   return (
@@ -32,6 +31,9 @@ export function EventGridSkeleton() {
 }
 
 // helper components
+const EventGridContainer = ({ children }: PropsWithChildren) => {
+  return <section className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">{children}</section>;
+};
 
 type TEventCardProps = {
   event: TEvent;
@@ -40,7 +42,7 @@ type TEventCardProps = {
 };
 
 const EventCard = ({ event, className }: TEventCardProps) => {
-  const { coverImage, title, category, startDate, endDate, location, description } = event;
+  const { coverImage, title, category, startDate, location, description } = event;
 
   return (
     <Card
@@ -76,15 +78,20 @@ const EventCard = ({ event, className }: TEventCardProps) => {
         </CardTitle>
         <div className="text-muted-foreground mt-1 flex flex-col gap-2 text-sm">
           <div className="flex items-center gap-2">
-            <CalendarDays className="size-4" />
-            <span>
-              {format(startDate.toDate(), "MMM dd, yyyy")} - {format(endDate.toDate(), "MMM dd, yyyy")}
-            </span>
+            <UserIcon className="size-4" />
+            <span>{event.createdBy.name}</span>
           </div>
 
           <div className="flex items-center gap-2">
+            <CalendarDays className="size-4" />
+            <span>{format(startDate.toDate(), "MMM dd, yyyy : hh:mm aa")}</span>
+          </div>
+
+          <div className="flex gap-2">
             <MapPin className="size-4" />
-            <span className="truncate">{location}</span>
+            <span className="w-full">
+              {location} {location}
+            </span>
           </div>
         </div>
       </CardHeader>
@@ -94,10 +101,6 @@ const EventCard = ({ event, className }: TEventCardProps) => {
       </CardContent>
     </Card>
   );
-};
-
-const EventGridContainer = ({ children }: PropsWithChildren) => {
-  return <section className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">{children}</section>;
 };
 
 const EventCardSkeleton = ({ className }: { className?: string }) => {
