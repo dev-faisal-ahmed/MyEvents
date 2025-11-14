@@ -5,18 +5,33 @@ import { Badge } from "@/components/ui/badge";
 import { CalendarDays, MapPin } from "lucide-react";
 import { format } from "date-fns";
 import { Link } from "react-router";
+import { Skeleton } from "@/components/ui/skeleton";
+import type { PropsWithChildren } from "react";
+
+// main components to export
 
 type TEventGirdProps = { events: TEvent[] };
-
 export function EventGrid({ events }: TEventGirdProps) {
   return (
-    <section className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+    <EventGridContainer>
       {events.map((event) => (
         <EventCard key={event.id} event={event} />
       ))}
-    </section>
+    </EventGridContainer>
   );
 }
+
+export function EventGridSkeleton() {
+  return (
+    <EventGridContainer>
+      {Array.from({ length: 6 }).map((_, i) => (
+        <EventCardSkeleton key={i} />
+      ))}
+    </EventGridContainer>
+  );
+}
+
+// helper components
 
 type TEventCardProps = {
   event: TEvent;
@@ -76,6 +91,48 @@ const EventCard = ({ event, className }: TEventCardProps) => {
 
       <CardContent>
         <p className="text-muted-foreground line-clamp-3 text-sm">{stripMarkdown(description)}</p>
+      </CardContent>
+    </Card>
+  );
+};
+
+const EventGridContainer = ({ children }: PropsWithChildren) => {
+  return <section className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">{children}</section>;
+};
+
+const EventCardSkeleton = ({ className }: { className?: string }) => {
+  return (
+    <Card className={cn("relative overflow-hidden dark:border-neutral-800", className)}>
+      {/* Image area */}
+      <div className="relative h-56 w-full overflow-hidden">
+        <Skeleton className="h-full w-full rounded-none" />
+        {/* Category badge placeholder */}
+        <Skeleton className="absolute top-3 left-3 h-5 w-16 rounded-md" />
+      </div>
+
+      <CardHeader>
+        {/* Title */}
+        <Skeleton className="h-5 w-2/3" />
+
+        {/* Date row */}
+        <div className="mt-2 flex items-center gap-2">
+          <Skeleton className="h-4 w-4 rounded-full" />
+          <Skeleton className="h-4 w-32" />
+        </div>
+
+        {/* Location row */}
+        <div className="mt-2 flex items-center gap-2">
+          <Skeleton className="h-4 w-4 rounded-full" />
+          <Skeleton className="h-4 w-24" />
+        </div>
+      </CardHeader>
+
+      <CardContent>
+        <div className="space-y-2">
+          <Skeleton className="h-3 w-full" />
+          <Skeleton className="h-3 w-5/6" />
+          <Skeleton className="h-3 w-4/6" />
+        </div>
       </CardContent>
     </Card>
   );

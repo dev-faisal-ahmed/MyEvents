@@ -5,8 +5,9 @@ import { getUserIdOrThrow } from "../global/global-service";
 import { collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where } from "firebase/firestore";
 import { db } from "@/lib/firebase/firebase-config";
 import { dbNames } from "@/lib/firebase/db-names";
-import { Response } from "@/lib/response";
 import { uploadToCloudinary } from "@/lib/cloudinary";
+import { Response } from "@/lib/response";
+import { format } from "date-fns";
 
 const createEvent = async (input: TEventSchema) => {
   const userId = getUserIdOrThrow();
@@ -34,11 +35,17 @@ const createEvent = async (input: TEventSchema) => {
   return Response.success("Event created successfully", { id: eventDocRef.id });
 };
 
+// const getUpcomingEvents = async () => {
+//   const dbQuery = query(collection(db, dbNames.events), where("startDate", ">=", serverTimestamp()));
+// };
+
 const getEvents = async () => {
   const userId = getUserIdOrThrow();
   const dbQuery = query(collection(db, dbNames.events), where("createdBy", "==", userId));
   const snapshot = await getDocs(dbQuery);
   const events = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as TEvent[];
+
+  console.log("Called at", format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 
   return Response.success("Events fetched successfully", events);
 };

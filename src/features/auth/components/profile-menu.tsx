@@ -5,13 +5,20 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/providers/auth-provider";
 import { DropdownMenuContent } from "@radix-ui/react-dropdown-menu";
 import { IoLogOut } from "react-icons/io5";
-import { signOutUser } from "../auth.utils";
+import { signOutUser } from "../auth-service";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function ProfileMenu() {
+  const queryClient = useQueryClient();
   const { user, isLoading } = useAuth();
 
   if (isLoading) return <UserLoading />;
   if (!user) return null;
+
+  const handleSignOutUser = async () => {
+    await signOutUser();
+    queryClient.clear();
+  };
 
   return (
     <DropdownMenu>
@@ -26,7 +33,7 @@ export function ProfileMenu() {
           <h3>{user.displayName}</h3>
           <p className="text-muted-foreground text-sm">{user.email}</p>
         </div>
-        <Button onClick={signOutUser} variant="destructive" className="flex w-full items-center justify-center gap-2">
+        <Button onClick={handleSignOutUser} variant="destructive" className="flex w-full items-center justify-center gap-2">
           <IoLogOut /> Logout
         </Button>
       </DropdownMenuContent>
