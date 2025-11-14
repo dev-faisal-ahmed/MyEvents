@@ -21,6 +21,7 @@ export const signInWithGoogle = async () => {
 const createUserIfNotExists = async (user: User) => {
   const userRef = doc(db, dbNames.users, user.uid);
   const snapshot = await getDoc(userRef);
+
   if (!snapshot.exists()) return;
 
   const userData = {

@@ -7,14 +7,18 @@ import { format } from "date-fns";
 import { Link } from "react-router";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { PropsWithChildren } from "react";
+import { useGetFavoriteMap } from "@/features/favorite/favorite-hook";
+import { FavoriteButton } from "@/features/favorite/components/favorite-button";
 
 // main components to export
 type TEventGirdProps = { events: TEvent[] };
 export function EventGrid({ events }: TEventGirdProps) {
+  const { data } = useGetFavoriteMap();
+
   return (
     <EventGridContainer>
       {events.map((event) => (
-        <EventCard key={event.id} event={event} />
+        <EventCard key={event.id} event={event} isFavorited={!!data?.[event.id]} />
       ))}
     </EventGridContainer>
   );
@@ -39,10 +43,11 @@ type TEventCardProps = {
   event: TEvent;
   isOwner?: boolean;
   className?: string;
+  isFavorited: boolean;
 };
 
-const EventCard = ({ event, className }: TEventCardProps) => {
-  const { coverImage, title, category, startDate, location, description } = event;
+const EventCard = ({ event, className, isFavorited }: TEventCardProps) => {
+  const { id, coverImage, title, category, startDate, location, description } = event;
 
   return (
     <Card
@@ -67,6 +72,10 @@ const EventCard = ({ event, className }: TEventCardProps) => {
         </div>
 
         <Badge className="absolute top-3 left-3 z-20 text-xs font-medium tracking-wide uppercase">{category}</Badge>
+
+        <div className="absolute top-3 right-3 z-20">
+          <FavoriteButton id={id} initialFavorited={isFavorited} />
+        </div>
       </div>
 
       {/* Content */}

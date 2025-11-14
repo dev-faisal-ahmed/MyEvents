@@ -28,7 +28,7 @@ export function ProfileMenu() {
           {user.displayName && <AvatarFallback>{user.displayName[0].toUpperCase()}</AvatarFallback>}
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="z-20 rounded-md border bg-black px-6 py-4" align="end" sideOffset={10}>
+      <DropdownMenuContent className="z-30 rounded-md border bg-black px-6 py-4" align="end" sideOffset={10}>
         <div className="mb-4 space-y-1 border-b pb-2">
           <h3>{user.displayName}</h3>
           <p className="text-muted-foreground text-sm">{user.email}</p>
