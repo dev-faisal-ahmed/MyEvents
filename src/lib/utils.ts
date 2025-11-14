@@ -41,7 +41,7 @@ export const stripMarkdown = (markdown: string): string => {
     .replace(/(\*\*|__)(.*?)\1/g, "$2") // bold
     .replace(/(\*|_)(.*?)\1/g, "$2") // italics
     .replace(/^#+\s+(.*)/gm, "$1") // headings
-    .replace(/>\s?(.*)/g, "$1") // blockquotes
+    .replace(/>\s?(.*)/g, "$1") // block quotes
     .replace(/[-*+]\s+(.*)/g, "$1") // list items
     .replace(/\n{2,}/g, " ") // collapse newlines
     .trim();
@@ -52,4 +52,14 @@ export const parseValidDate = (dateStr: string | null | undefined) => {
 
   const date = new Date(dateStr);
   return isNaN(date.getTime()) ? undefined : date;
+};
+
+export const chuckArray = <T>(arr: T[], size: number) => {
+  const result: T[][] = [];
+
+  for (let i = 0; i < arr.length; i += size) {
+    result.push(arr.slice(i, i + size));
+  }
+
+  return result;
 };

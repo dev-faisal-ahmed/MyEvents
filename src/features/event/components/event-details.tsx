@@ -1,19 +1,21 @@
+import { format } from "date-fns";
+import { Link } from "react-router";
 import { CalendarDays, MapPin, User, Tag, EditIcon } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { MarkdownPreview } from "@/components/shared/markdown-preview";
 import { Badge } from "@/components/ui/badge";
-import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { useGetEventDetails } from "../event-hook";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Link } from "react-router";
-import { DeleteEvent } from "./delete-event";
 import { useAuth } from "@/providers/auth-provider";
+import { useGetFavoriteMap } from "@/features/favorite/favorite-hook";
+import { FavoriteButton } from "@/features/favorite/components/favorite-button";
+import { DeleteEvent } from "./delete-event";
 
 type TEventDetailsProps = { id: string };
-
 export function EventDetails({ id }: TEventDetailsProps) {
   const { data, isLoading } = useGetEventDetails(id);
+  const { data: favoritedMap } = useGetFavoriteMap();
   const { user } = useAuth();
 
   if (isLoading) return <EventDetailsSkeleton />;
@@ -39,6 +41,10 @@ export function EventDetails({ id }: TEventDetailsProps) {
         {/* Foreground main image */}
         <div className="relative z-10 flex h-80 w-full items-center justify-center sm:h-[450px]">
           <img src={coverImage} alt={title} className="max-h-full w-full rounded-xl object-contain" />
+        </div>
+
+        <div className="absolute top-4 right-4 z-20">
+          <FavoriteButton id={id} initialFavorited={!!favoritedMap?.[id]} />
         </div>
       </div>
 

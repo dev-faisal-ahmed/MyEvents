@@ -1,12 +1,13 @@
 import type { TEvent } from "./event-type";
 import type { TEventSchema } from "./event-schema";
-import { safePromise } from "@/lib/utils";
+import { chuckArray, safePromise } from "@/lib/utils";
 import { getUserOrThrow } from "../global/global-service";
-import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, Timestamp, where } from "firebase/firestore";
+import { collection, deleteDoc, doc, documentId, getDoc, getDocs, query, setDoc, Timestamp, where } from "firebase/firestore";
 import { db } from "@/lib/firebase/firebase-config";
 import { dbNames } from "@/lib/firebase/db-names";
 import { uploadToCloudinary } from "@/lib/cloudinary";
 import { Response } from "@/lib/response";
+import type { TFavorite } from "../favorite/favorite-type";
 
 const createEvent = async (input: TEventSchema) => {
   const user = getUserOrThrow();
@@ -44,6 +45,21 @@ const getUpComingEvents = async () => {
   const events = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as TEvent[];
 
   return Response.success("Events fetched successfully", events);
+};
+
+const getFavoritedEvents = async () => {
+  const user = getUserOrThrow();
+  const dbQuery = query(collection(db, dbNames.favorites), where("userId", "==", user.uid));
+  const snapshot = await getDocs(dbQuery);
+  const favoriteList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as TFavorite[];
+  const favoriteEventIds = favoriteList.map((favorite) => favorite.eventId) as string[];
+
+  const groups = chuckArray(favoriteEventIds, 10);
+
+  const queries = groups.map((group) => getDocs(query(collection(db, dbNames.events), where(documentId(), "in", group))));
+  const results = await Promise.all(queries);
+  const events = results.flatMap((snap) => snap.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+  return events as TEvent[];
 };
 
 const getEventById = async (id: string) => {
@@ -105,4 +121,4 @@ const deleteEvent = async (id: string) => {
   return Response.success("Event deleted successfully", { id });
 };
 
-export { createEvent, getUpComingEvents, getEventById, updateEvent, deleteEvent };
+export { createEvent, getUpComingEvents, getFavoritedEvents, getEventById, updateEvent, deleteEvent };

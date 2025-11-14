@@ -11,6 +11,7 @@ const lazyPages = {
   newEvent: lazy(() => import("@/pages/new-event-page")),
   eventDetails: lazy(() => import("@/pages/event-details-page")),
   editEvent: lazy(() => import("@/pages/edit-event-page")),
+  favorite: lazy(() => import("@/pages/favorite-events-page")),
 
   // auth
   landing: lazy(() => import("@/pages/landing-page")),
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
         children: [
           { path: "/", element: withSuspense(lazyPages.home) },
           { path: "/events/new", element: withSuspense(lazyPages.newEvent) },
+          { path: "/events/favorite", element: withSuspense(lazyPages.favorite) },
           { path: "/events/:id", element: withSuspense(lazyPages.eventDetails) },
           { path: "/events/:id/edit", element: withSuspense(lazyPages.editEvent) },
         ],

@@ -3,4 +3,5 @@ export const queryKeys = {
   events: "events",
   favorites: "favorites",
   favoriteStatusMap: "favorite-status-map",
+  favoritedEvents: "favorited-events",
 } as const;

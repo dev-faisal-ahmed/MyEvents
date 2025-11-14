@@ -3,9 +3,9 @@ import { queryKeys } from "./query-keys";
 
 const actions = {
   createEvent: [queryKeys.events],
-  updateEvent: [queryKeys.events],
-  deleteEvent: [queryKeys.events],
-  toggleFavorite: [queryKeys.favorites, queryKeys.favoriteStatusMap],
+  updateEvent: [queryKeys.events, queryKeys.favoritedEvents],
+  deleteEvent: [queryKeys.events, queryKeys.favoritedEvents],
+  toggleFavorite: [queryKeys.favorites, queryKeys.favoriteStatusMap, queryKeys.favoritedEvents],
 };
 
 export const useRevalidate = () => {
