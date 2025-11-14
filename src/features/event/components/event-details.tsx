@@ -8,16 +8,24 @@ import { useGetEventDetails } from "../event-hook";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "react-router";
 import { DeleteEvent } from "./delete-event";
+import { useAuth } from "@/providers/auth-provider";
 
 type TEventDetailsProps = { id: string };
 
 export function EventDetails({ id }: TEventDetailsProps) {
   const { data, isLoading } = useGetEventDetails(id);
+  const { user } = useAuth();
 
   if (isLoading) return <EventDetailsSkeleton />;
   if (!data) return <div className="text-destructive py-20 text-center">Event not found</div>;
 
   const { coverImage, title, category, createdBy, startDate, endDate, location, description } = data;
+
+  const editButton = (
+    <Button disabled={user?.uid !== createdBy.id} variant="default">
+      <EditIcon className="mr-1 h-4 w-4" /> Edit
+    </Button>
+  );
 
   return (
     <section className="container mx-auto flex flex-col gap-6 py-8">
@@ -49,14 +57,12 @@ export function EventDetails({ id }: TEventDetailsProps) {
             </div>
           </div>
 
+          {/* {user && user.uid === createdBy.id && ( */}
           <div className="mt-4 flex gap-4 sm:mt-0">
-            <Link to={`/events/${id}/edit`}>
-              <Button variant="default">
-                <EditIcon className="mr-1 h-4 w-4" /> Edit
-              </Button>
-            </Link>
-            <DeleteEvent id={id} />
+            {user?.uid === createdBy.id ? <Link to={`/events/${id}/edit`}>{editButton}</Link> : editButton}
+            <DeleteEvent id={id} disabled={user?.uid !== createdBy.id} />
           </div>
+          {/* )} */}
         </CardHeader>
 
         {/* Meta Info */}

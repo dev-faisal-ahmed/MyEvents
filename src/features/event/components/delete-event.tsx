@@ -8,10 +8,10 @@ import { deleteEvent } from "../event-service";
 import { useNavigate } from "react-router";
 import { useRevalidate } from "@/lib/cache-helper";
 
-type TDeleteEventProps = { id: string };
+type TDeleteEventProps = { id: string; disabled?: boolean };
 const mutationKey = `delete_${queryKeys.events}`;
 
-export function DeleteEvent({ id }: TDeleteEventProps) {
+export function DeleteEvent({ id, disabled }: TDeleteEventProps) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const { mutate } = useMutation({ mutationKey: [mutationKey], mutationFn: deleteEvent });
@@ -29,7 +29,7 @@ export function DeleteEvent({ id }: TDeleteEventProps) {
 
   return (
     <>
-      <Button onClick={() => setOpen(true)} variant="destructive">
+      <Button disabled={disabled} onClick={() => setOpen(true)} variant="destructive">
         <Trash2Icon className="mr-1 h-4 w-4" /> Delete
       </Button>
 

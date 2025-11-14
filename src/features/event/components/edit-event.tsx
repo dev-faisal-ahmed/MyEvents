@@ -8,6 +8,7 @@ import { updateEvent } from "../event-service";
 import type { TEventSchema } from "../event-schema";
 import { useRevalidate } from "@/lib/cache-helper";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAuth } from "@/providers/auth-provider";
 
 type TEditEventProps = { id: string };
 export function EditEvent({ id }: TEditEventProps) {
@@ -16,6 +17,7 @@ export function EditEvent({ id }: TEditEventProps) {
   const { data, isLoading } = useGetEventDetails(id);
   const { mutate, isPending } = useMutation({ mutationFn: updateEvent });
   const { revalidate } = useRevalidate();
+  const { user } = useAuth();
 
   const handleUpdateEvent = (formData: TEventSchema) => {
     mutate(
@@ -35,6 +37,11 @@ export function EditEvent({ id }: TEditEventProps) {
 
   if (isLoading) return <EditEventSkeleton />;
   if (!data) return <ErrorMessage title="Event not found" message={`No Event found with id ${id}`} onRetry={handleGoBack} />;
+
+  if (user?.uid !== data.createdBy.id)
+    return (
+      <ErrorMessage title="Unauthorized" message="You are not authorized to edit this event" onRetry={handleGoBack} buttonText="Go Back" />
+    );
 
   return (
     <Card>

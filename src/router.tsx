@@ -1,8 +1,10 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { lazy, Suspense, type LazyExoticComponent } from "react";
-import { MainLayout } from "./layout/main-layout";
+// import { MainLayout } from "./layout/main-layout";
 import { AuthGuard } from "./features/auth/components/auth-guard";
 import { FullPageLoader } from "./components/shared/full-page-loader";
+
+const MainLayout = lazy(() => import("@/layout/main-layout"));
 
 const lazyPages = {
   home: lazy(() => import("@/pages/home-page")),
@@ -26,7 +28,7 @@ const withSuspense = (Component: LazyExoticComponent<any>) => {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />,
+    element: withSuspense(MainLayout),
     children: [
       {
         path: "/",
