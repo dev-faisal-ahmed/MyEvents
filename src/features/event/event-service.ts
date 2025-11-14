@@ -2,7 +2,7 @@ import type { TEvent } from "./event-type";
 import type { TEventSchema } from "./event-schema";
 import { safePromise } from "@/lib/utils";
 import { getUserOrThrow } from "../global/global-service";
-import { collection, doc, getDoc, getDocs, query, setDoc, Timestamp, where } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, Timestamp, where } from "firebase/firestore";
 import { db } from "@/lib/firebase/firebase-config";
 import { dbNames } from "@/lib/firebase/db-names";
 import { uploadToCloudinary } from "@/lib/cloudinary";
@@ -88,4 +88,21 @@ const updateEvent = async ({ id, input }: TUpdateEventInput) => {
   return Response.success("Event updated successfully", { id });
 };
 
-export { createEvent, getUpComingEvents, getEventById, updateEvent };
+const deleteEvent = async (id: string) => {
+  const user = getUserOrThrow();
+
+  const eventRef = doc(db, dbNames.events, id);
+  const eventSnapshot = await getDoc(eventRef);
+
+  if (!eventSnapshot.exists()) throw new Error("Event not found");
+
+  const existingEvent = eventSnapshot.data() as TEvent;
+  if (existingEvent.createdBy.id !== user.uid) throw new Error("You are not authorized to delete this event");
+
+  const [deleteError] = await safePromise(deleteDoc(eventRef));
+  if (deleteError) throw deleteError;
+
+  return Response.success("Event deleted successfully", { id });
+};
+
+export { createEvent, getUpComingEvents, getEventById, updateEvent, deleteEvent };

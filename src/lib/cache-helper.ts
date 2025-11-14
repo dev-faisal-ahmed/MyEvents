@@ -4,6 +4,7 @@ import { queryKeys } from "./query-keys";
 const actions = {
   createEvent: [[queryKeys.events]],
   updateEvent: [[queryKeys.events]],
+  deleteEvent: [[queryKeys.events]],
 };
 
 export const useRevalidate = () => {

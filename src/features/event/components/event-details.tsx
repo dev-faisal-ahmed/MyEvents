@@ -1,4 +1,4 @@
-import { CalendarDays, MapPin, User, Tag, EditIcon, Trash2Icon } from "lucide-react";
+import { CalendarDays, MapPin, User, Tag, EditIcon } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { MarkdownPreview } from "@/components/shared/markdown-preview";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useGetEventDetails } from "../event-hook";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "react-router";
+import { DeleteEvent } from "./delete-event";
 
 type TEventDetailsProps = { id: string };
 
@@ -48,15 +49,13 @@ export function EventDetails({ id }: TEventDetailsProps) {
             </div>
           </div>
 
-          <div className="mt-4 flex gap-2 sm:mt-0">
+          <div className="mt-4 flex gap-4 sm:mt-0">
             <Link to={`/events/${id}/edit`}>
               <Button variant="default">
                 <EditIcon className="mr-1 h-4 w-4" /> Edit
               </Button>
             </Link>
-            <Button variant="destructive">
-              <Trash2Icon className="mr-1 h-4 w-4" /> Delete
-            </Button>
+            <DeleteEvent id={id} />
           </div>
         </CardHeader>
 
