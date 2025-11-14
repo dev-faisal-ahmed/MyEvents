@@ -40,7 +40,7 @@ type TEventDetailsProps = {
 };
 
 const EventDetails = ({ event }: TEventDetailsProps) => {
-  const { title, description, category, location, startDate, endDate, coverImage, cratedBy } = event;
+  const { title, description, category, location, startDate, endDate, coverImage, createdBy } = event;
 
   return (
     <section className="container mx-auto flex flex-col gap-6 py-8">
@@ -67,7 +67,7 @@ const EventDetails = ({ event }: TEventDetailsProps) => {
                 {category}
               </Badge>
               <span className="flex items-center gap-1">
-                <User className="size-4" /> {cratedBy}
+                <User className="size-4" /> {createdBy.name}
               </span>
             </div>
           </div>

@@ -46,3 +46,10 @@ export const stripMarkdown = (markdown: string): string => {
     .replace(/\n{2,}/g, " ") // collapse newlines
     .trim();
 };
+
+export const parseValidDate = (dateStr: string | null | undefined) => {
+  if (!dateStr) return undefined;
+
+  const date = new Date(dateStr);
+  return isNaN(date.getTime()) ? undefined : date;
+};

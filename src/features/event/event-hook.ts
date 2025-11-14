@@ -1,14 +1,15 @@
 import { useMemo } from "react";
 import type { TEvent } from "./event-type";
 import { useSearchParams } from "react-router";
+import { eventFilterKeys } from "./event-consts";
 
 export const useEventsWithFilters = (eventsFromDB: TEvent[], limit: number = 6) => {
   const [searchParams] = useSearchParams();
-  const search = searchParams.get("search") ?? undefined;
-  const category = searchParams.get("category") ?? undefined;
-  const startDate = searchParams.get("startDate") ?? undefined;
-  const endDate = searchParams.get("endDate") ?? undefined;
-  const page = searchParams.get("page") ?? undefined;
+  const search = searchParams.get(eventFilterKeys.search) ?? undefined;
+  const category = searchParams.get(eventFilterKeys.category) ?? undefined;
+  const startDate = searchParams.get(eventFilterKeys.startDate) ?? undefined;
+  const endDate = searchParams.get(eventFilterKeys.endDate) ?? undefined;
+  const page = searchParams.get(eventFilterKeys.page) ?? undefined;
 
   const eventsWithPaginationData = useMemo(() => {
     const pageAsNumber = Number(page) || 1;

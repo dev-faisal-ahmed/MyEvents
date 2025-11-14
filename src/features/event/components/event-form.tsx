@@ -4,7 +4,6 @@ import { eventSchema, type TEventSchema } from "../event-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldGroup, FieldSet } from "@/components/ui/field";
 import { FormField } from "@/components/form/form-field";
-import { eventCategories } from "@/data/event-categories";
 import { FormSelect } from "@/components/form/form-select";
 import { MarkdownEditor } from "@/components/form/markdown-editor";
 import { DateTimePicker } from "@/components/ui/date-time-picker";
@@ -13,8 +12,7 @@ import { ImageInput } from "@/components/form/image-input";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
 import { Input } from "@/components/ui/input";
-
-const categoryOptions = Object.values(eventCategories).map((eventValue) => ({ label: eventValue, value: eventValue }));
+import { categoryOptions } from "@/data/event-categories";
 
 type TEventFormProps = {
   onSubmit: (formData: TEventSchema, reset: () => void) => void;

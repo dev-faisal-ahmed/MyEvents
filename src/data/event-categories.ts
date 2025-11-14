@@ -25,3 +25,5 @@ export const eventCategories = {
   career_fair: "Career Fair",
   startup_pitch: "Startup Pitch",
 } as const;
+
+export const categoryOptions = Object.values(eventCategories).map((eventValue) => ({ label: eventValue, value: eventValue }));

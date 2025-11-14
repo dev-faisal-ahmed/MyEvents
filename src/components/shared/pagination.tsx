@@ -16,8 +16,6 @@ export function Pagination({ totalPage }: PaginationProps) {
     setParams(nextParams);
   };
 
-  if (totalPage <= 1) return null;
-
   const makeRange = () => {
     const pages = new Set<number>();
 
@@ -34,7 +32,7 @@ export function Pagination({ totalPage }: PaginationProps) {
   const range = makeRange();
 
   return (
-    <div className="flex items-center justify-center gap-2 py-2">
+    <div className="flex items-center justify-center gap-2 border-t py-4">
       {/* PREV */}
       <Button variant="outline" onClick={() => setPage(page - 1)} disabled={page === 1}>
         <IoIosArrowBack />

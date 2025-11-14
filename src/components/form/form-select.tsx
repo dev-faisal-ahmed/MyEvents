@@ -15,7 +15,7 @@ type TOption = {
 export function FormSelect({ value, onChange, options, placeholder }: TFormSelectProps) {
   return (
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger>
+      <SelectTrigger className="w-full">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
