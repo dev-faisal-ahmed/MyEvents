@@ -1,9 +1,5 @@
-import { UpcomingEvent } from "@/features/event/components/upcoming-event";
+import { UpcomingEvent } from "@/features/event/components/upcoming-events";
 
 export default function HomePage() {
-  return (
-    <section className="my-6">
-      <UpcomingEvent />
-    </section>
-  );
+  return <UpcomingEvent />;
 }

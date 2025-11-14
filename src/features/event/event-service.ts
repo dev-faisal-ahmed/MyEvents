@@ -2,7 +2,7 @@ import type { TEvent } from "./event-type";
 import type { TEventSchema } from "./event-schema";
 import { safePromise } from "@/lib/utils";
 import { getUserOrThrow } from "../global/global-service";
-import { collection, doc, getDoc, getDocs, query, setDoc, Timestamp } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, setDoc, Timestamp, where } from "firebase/firestore";
 import { db } from "@/lib/firebase/firebase-config";
 import { dbNames } from "@/lib/firebase/db-names";
 import { uploadToCloudinary } from "@/lib/cloudinary";
@@ -38,6 +38,14 @@ const createEvent = async (input: TEventSchema) => {
   return Response.success("Event created successfully", { id: eventDocRef.id });
 };
 
+const getUpComingEvents = async () => {
+  const dbQuery = query(collection(db, dbNames.events), where("startDate", ">", Timestamp.now()));
+  const snapshot = await getDocs(dbQuery);
+  const events = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as TEvent[];
+
+  return Response.success("Events fetched successfully", events);
+};
+
 const getEvents = async () => {
   const dbQuery = query(collection(db, dbNames.events));
   const snapshot = await getDocs(dbQuery);
@@ -53,4 +61,4 @@ const getEventById = async (id: string) => {
   return Response.success("Event fetched successfully", eventData);
 };
 
-export { createEvent, getEvents, getEventById };
+export { createEvent, getUpComingEvents, getEvents, getEventById };
