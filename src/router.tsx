@@ -15,6 +15,9 @@ const lazyPages = {
 
   // auth
   landing: lazy(() => import("@/pages/landing-page")),
+
+  // not found page
+  notFound: lazy(() => import("@/pages/not-found-page")),
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -46,6 +49,11 @@ const router = createBrowserRouter([
       {
         path: "/landing",
         element: withSuspense(lazyPages.landing),
+      },
+
+      {
+        path: "*",
+        element: withSuspense(lazyPages.notFound),
       },
     ],
   },

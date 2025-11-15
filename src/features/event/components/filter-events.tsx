@@ -12,6 +12,7 @@ import { parseValidDate } from "@/lib/utils";
 import { eventFilterKeys } from "../event-consts";
 import { useMediaQuery } from "@/lib/hooks";
 import { SearchIcon, Trash2Icon } from "lucide-react";
+import { TooltipContainer } from "@/components/shared/tooltip-container";
 
 export function FilterEvents() {
   const [params, setParams] = useSearchParams();
@@ -114,9 +115,11 @@ const FilterContent = ({ search, category, startDate, endDate, updateParam, clea
           />
         </div>
       </div>
-      <Button variant="destructive" onClick={clearFilters}>
-        {!isMobile ? <Trash2Icon /> : "Clear Filter"}
-      </Button>
+      <TooltipContainer label="Clear Filter">
+        <Button variant="destructive" onClick={clearFilters}>
+          {!isMobile ? <Trash2Icon /> : "Clear Filter"}
+        </Button>
+      </TooltipContainer>
     </section>
   );
 };

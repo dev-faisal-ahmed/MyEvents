@@ -25,7 +25,7 @@ export function EventDetails({ id }: TEventDetailsProps) {
 
   const editButton = (
     <Button disabled={user?.uid !== createdBy.id} variant="default">
-      <EditIcon className="mr-1 h-4 w-4" /> Edit
+      <EditIcon className="mr-1 size-4" /> Edit
     </Button>
   );
 

@@ -1,75 +1,69 @@
-# React + TypeScript + Vite
+# My Event
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+My Event is a web application for discovering and managing events. Users can browse upcoming events, view event details, and create their own events. It also features user authentication and the ability to favorite events.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **User Authentication:** Sign in with your Google account.
+- **Create Events:** Authenticated users can create new events with details like title, description, date, category, and a cover image.
+- **Browse Events:** View a list of upcoming events.
+- **Event Details:** See more information about a specific event.
+- **Edit and Delete Events:** Users can edit or delete the events they have created.
+- **Favorite Events:** Users can mark events as favorites and view them in a separate list.
 
-## React Compiler
+## Technologies Used
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- **Frontend:**
+  - [React](https://reactjs.org/)
+  - [TypeScript](https://www.typescriptlang.org/)
+  - [Vite](https://vitejs.dev/)
+  - [Tailwind CSS](https://tailwindcss.com/)
+  - [shadcn/ui](https://ui.shadcn.com/)
+- **State Management:**
+  - [Tanstack Query](https://tanstack.com/query/v4)
+- **Forms:**
+  - [React Hook Form](https://react-hook-form.com/)
+  - [Zod](https://zod.dev/)
+- **Routing:**
+  - [React Router](https://reactrouter.com/)
+- **Backend Services:**
+  - [Firebase](https://firebase.google.com/) (Authentication, Firestore, Storage)
+  - [Cloudinary](https://cloudinary.com/) (Image Hosting)
 
-Note: This will impact Vite dev & build performances.
+## Getting Started
 
-## Expanding the ESLint configuration
+To get a local copy up and running, follow these simple steps.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Prerequisites
 
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
+- Node.js (v18 or later)
+- npm
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Installation
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+1.  Clone the repo
+    ```sh
+    git clone https://github.com/your_username/my-event.git
+    ```
+2.  Install NPM packages
+    ```sh
+    npm install
+    ```
+3.  Set up environment variables
+    - Create a `.env` file in the root of the project.
+    - Copy the contents of `env.example` into the `.env` file.
+    - Fill in the values for the environment variables. You will need to create a Firebase project and a Cloudinary account to get the necessary keys.
+
+### Usage
+
+Start the development server:
+
+```sh
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+## Live Site
 
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+Open [https://ost-my-events.web.app/](https://ost-my-events.web.app/) to view it in the browser.
