@@ -5,6 +5,7 @@ import { EventGrid, EventGridSkeleton } from "./event-grid";
 import { useEventsWithFilters } from "../event-hook";
 import { Pagination } from "@/components/shared/pagination";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { ErrorMessage } from "@/components/shared/error-message";
 
 export function FavoritedEvents() {
   const { data, isLoading } = useQuery({ queryKey: [queryKeys.favoritedEvents], queryFn: getFavoritedEvents });
@@ -16,7 +17,7 @@ export function FavoritedEvents() {
     <>
       <ScrollArea className="grow">
         <ScrollArea className="my-6 grow px-6">
-          <EventGrid events={events} />
+          {events.length ? <EventGrid events={events} /> : <ErrorMessage title="No Event Found" message="Please favorite some event" />}
         </ScrollArea>
       </ScrollArea>
       {totalPage > 1 && <Pagination totalPage={totalPage} />}

@@ -27,7 +27,7 @@ const getFavoriteMap = async () => {
   const snapshot = await getDocs(dbQuery);
 
   const favoriteList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as TFavorite[];
-  console.log(favoriteList);
+
   const favoriteMap: Record<string, boolean> = {};
   favoriteList.forEach((favorite) => {
     favoriteMap[favorite.eventId] = true;
