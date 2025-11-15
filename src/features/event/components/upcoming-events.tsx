@@ -12,7 +12,12 @@ export function UpcomingEvent() {
   const { data, isLoading } = useQuery({ queryKey: [queryKeys.events], queryFn: getUpComingEvents, select: (res) => res.data });
   const { events, totalPage } = useEventsWithFilters(data || []);
 
-  if (isLoading) return <EventGridSkeleton />;
+  if (isLoading)
+    return (
+      <div className="p-6">
+        <EventGridSkeleton />
+      </div>
+    );
 
   return (
     <>

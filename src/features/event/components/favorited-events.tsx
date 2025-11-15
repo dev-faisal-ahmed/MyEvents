@@ -11,7 +11,12 @@ export function FavoritedEvents() {
   const { data, isLoading } = useQuery({ queryKey: [queryKeys.favoritedEvents], queryFn: getFavoritedEvents });
   const { events, totalPage } = useEventsWithFilters(data ?? []);
 
-  if (isLoading) return <EventGridSkeleton />;
+  if (isLoading)
+    return (
+      <div className="p-6">
+        <EventGridSkeleton />
+      </div>
+    );
 
   return (
     <>
